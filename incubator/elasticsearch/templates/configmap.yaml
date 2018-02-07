@@ -10,11 +10,18 @@ metadata:
 data:
   elasticsearch.yml: |-
     cluster.name: {{ .Values.cluster.name }}
-    
+
     node.data: ${NODE_DATA:true}
     node.master: ${NODE_MASTER:true}
 {{- if hasPrefix "5." .Values.appVersion }}
     node.ingest: ${NODE_INGEST:true}
+{{- end }}
+{{- if .Values.client.cors }}
+    http.cors.enabled: true
+    http.cors.allow-origin: *
+    http.cors.allow-methods: OPTIONS, HEAD, GET, POST, PUT DELETE
+    http.cors.allow-headers: X-Requested-With, Content-Type, Content-Type
+    http.cors.allow-credentials: true
 {{- end }}
     node.name: ${HOSTNAME}
 
